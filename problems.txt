@@ -1,0 +1,9 @@
+Imagine a 2d matrix of dimensions mxn. Every cell of this matrix has x,y coordinates (0 <= x < m, 0 <= y, n).
+
+The matrix represents a lion-infested savannah.
+
+There’s a person somewhere in the matrix at coordinates X0, Y0. They want to reach their car at coordinates X1, Y1.
+
+But there are also a number of sleeping lions at coordinates xi, yi. There’s also a distance D whereby if somebody gets within a D radius of a sleeping lion, they would wake up the lion.
+
+Given all of these coordinates and the distance D, return the the fastest route between the person and their car that doesn’t wake a lion, or null if there is no such path.
