@@ -41,16 +41,16 @@ class Node:
         parent = self.findParentNode(node)
         node.parent = parent
         node.color = red
-        if parent.children[0] is None:
-            parent.children[0] = node
-        else:
+        if node.value > parent.value:
             parent.children[1] = node
-        node.repaint()
+        else:
+            parent.children[0] = node
+        #node.repaint()
 
     def repaint(self):
         if self.parent.color is red:
             self.parent.color = black
-            self.parent.repaint()
+            #self.parent.repaint()
 
 
 
@@ -59,12 +59,26 @@ class Node:
             if self.children[1] is None:
                 return self
             else:
-                self.children[1].findParentNode(node)
+                return self.children[1].findParentNode(node)
         else:
             if self.children[0] is None:
                 return self
             else:
-                self.children[0].findParentNode(node)
+                return self.children[0].findParentNode(node)
+
+    def findNode(self, value):
+        if self.value == value:
+            return self
+        if value > self.value:
+            if self.children[1] is not None:
+                return self.children[1].findNode(value)
+            else:
+                return None
+        else:
+            if self.children[0] is not None:
+                return self.children[0].findNode(value)
+            else:
+                return None
 
     def hasChildren(self):
         return self.children[0] is not None and self.children[1] is not None
@@ -81,11 +95,24 @@ class Node:
                 d.edge(str(node.id), str(child.id))
                 self.buildTree(d, child)
 
-root = Node(5)
-root.insert(Node(2))
+    def __str__(self):
+        return str(self.value)
+
+root = Node(7)
+root.insert(Node(4))
 root.insert(Node(3))
-root.insert(Node(7))
-root.insert(Node(1))
-root.insert(Node(8))
+root.insert(Node(2))
 root.insert(Node(6))
+root.insert(Node(18))
+root.insert(Node(11))
+root.insert(Node(19))
+root.insert(Node(14))
+root.insert(Node(9))
+root.insert(Node(12))
+root.insert(Node(17))
+root.insert(Node(22))
+root.insert(Node(20))
+#root.show()
+
+root.findNode(11).rightRotate()
 root.show()
