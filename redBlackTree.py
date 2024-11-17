@@ -5,13 +5,13 @@ black = "black"
 
 class Node:
     glob_id = 0
-    def __init__(self, value):
+    def __init__(self, value, color=red):
         self.parent = None
         self.children = [None, None]
         self.value = value
         Node.glob_id = Node.glob_id + 1
         self.id = Node.glob_id
-        self.color = None
+        self.color = color
 
     def leftRotate(self):
         selfParent = self.parent
@@ -51,18 +51,34 @@ class Node:
     def insert(self, node):
         parent = self.findParentNode(node)
         node.parent = parent
-        node.color = red
         if node.value > parent.value:
             parent.children[1] = node
         else:
             parent.children[0] = node
         #node.repaint()
 
-    def repaint(self):
-        if self.parent.color is red:
-            self.parent.color = black
-            #self.parent.repaint()
+    def insertBalanced(self, node):
+        parent = self.findParentNode(node)
+        node.parent = parent
+        node.color = red
+        if node.value > parent.value:
+            parent.children[1] = node
+        else:
+            parent.children[0] = node
+        notPainted = self.repaint(node)
+        if notPainted.color is red and notPainted.parent is red:
+            
 
+
+
+    def repaint(self, node):
+        if node.parent.color is red and node.parent.parent is not None and node.parent.parent.children[1] is red:
+            node.parent = black
+            node.parent.parent = red
+            node.parent.parent.children[1] = black
+            return self.repaint(node.parent.parent)
+        else:
+            return node
 
 
     def findParentNode(self, node):
@@ -100,7 +116,11 @@ class Node:
         d.view()
 
     def buildTree(self, d, node):
-        d.node(str(node.id), str(node.value))
+        fontcolor = 'black'
+        if node.color is black:
+            fontcolor= 'white'
+
+        d.node(str(node.id), str(node.value), fillcolor=node.color, style='filled', fontcolor=fontcolor)
         for child in node.children:
             if child is not None:
                 d.edge(str(node.id), str(child.id))
@@ -109,21 +129,15 @@ class Node:
     def __str__(self):
         return str(self.value)
 
-root = Node(7)
-root.insert(Node(4))
-root.insert(Node(3))
-root.insert(Node(2))
-root.insert(Node(6))
-root.insert(Node(11))
-root.insert(Node(18))
-root.insert(Node(19))
-root.insert(Node(14))
-root.insert(Node(9))
-root.insert(Node(12))
-root.insert(Node(17))
-root.insert(Node(22))
-root.insert(Node(20))
-#root.show()
-
-root.findNode(18).leftRotate()
+root = Node(11, black)
+root.insert(Node(2, red))
+root.insert(Node(1, black))
+root.insert(Node(7, black))
+root.insert(Node(5, red))
+root.insert(Node(8, red))
+root.insert(Node(14, black))
+root.insert(Node(15, red))
 root.show()
+
+#root.findNode(18).leftRotate()
+#root.show()
