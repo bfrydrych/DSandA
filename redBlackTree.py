@@ -13,6 +13,17 @@ class Node:
         self.id = Node.glob_id
         self.color = None
 
+    def leftRotate(self):
+        selfParent = self.parent
+        selfParentParent = selfParent.parent
+        self.parent = selfParent.parent
+        selfParent.parent = self
+        selfPrevLeftChild = self.children[0]
+        self.children[0] = selfParent
+        selfParent.children[1] = selfPrevLeftChild
+        selfParentParent.children[1] = self
+
+
     def rightRotate(self):
         #pivot parent
         #child(self) becomes parent of it's parent
@@ -103,8 +114,8 @@ root.insert(Node(4))
 root.insert(Node(3))
 root.insert(Node(2))
 root.insert(Node(6))
-root.insert(Node(18))
 root.insert(Node(11))
+root.insert(Node(18))
 root.insert(Node(19))
 root.insert(Node(14))
 root.insert(Node(9))
@@ -114,5 +125,5 @@ root.insert(Node(22))
 root.insert(Node(20))
 #root.show()
 
-root.findNode(11).rightRotate()
+root.findNode(18).leftRotate()
 root.show()
